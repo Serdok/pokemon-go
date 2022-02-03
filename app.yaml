@@ -10,6 +10,9 @@ automatic_scaling:
   min_pending_latency: 100ms
   max_pending_latency: 300ms
 
+env_variables:
+  FIREBASE_CONFIG_FILE: 'firebase-adminsdk.json'
+
 handlers:
   - url: /api
     static_files: static/index.html
