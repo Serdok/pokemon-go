@@ -1,0 +1,19 @@
+runtime: go116
+service: default
+main: ./cmd/
+
+instance_class: B1
+basic_scaling:
+  max_instances: 1
+  idle_timeout: 5m
+
+handlers:
+  - url: /api
+    static_files: static/index.html
+    upload: static/index.html
+  - url: /api/openapi.yaml
+    static_files: api/openapi.yaml
+    upload: api/openapi.yaml
+  - url: /api/(.*)
+    static_files: static/\1
+    upload: static/(.*)

@@ -1,0 +1,24 @@
+openapi: 3.0.3
+info:
+  title: 'Pokémon Go'
+  description: 'API'
+  version: '1.0.0'
+
+servers:
+  - url: 'https://serdok-pokemon-go.ew.r.appspot.com/'
+
+paths:
+  /health:
+    get:
+      summary: "Get the health of the API"
+      tags: [ "Utilities" ]
+      responses:
+        '200':
+          description: "API runs fine"
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  heartbeat:
+                    type: 'string'
