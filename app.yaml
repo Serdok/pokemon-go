@@ -15,12 +15,17 @@ env_variables:
   FIRESTORE_EMULATOR_HOST: localhost:9100
 
 handlers:
-  - url: /api
+  # Define root path of the app
+  - url: /
     static_files: static/index.html
     upload: static/index.html
-  - url: /api/openapi.yaml
+
+  # Upload openapi.yaml to /spec/openapi.yaml URL (for swagger-ui)
+  - url: /spec/openapi.yaml
     static_files: api/openapi.yaml
     upload: api/openapi.yaml
-  - url: /api/(.*)
+
+    # All URLs ending in .html, .css, .js, .png are treated as paths to static files in the static/ directory
+  - url: /(.*\.(html|css|js|png))$
     static_files: static/\1
-    upload: static/(.*)
+    upload: static/.*\.(html|css|js|png)$
