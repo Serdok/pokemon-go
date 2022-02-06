@@ -7,19 +7,19 @@
 #   $ gcloud topic gcloudignore
 #
 .gcloudignore
-# If you would like to upload your .git directory, .gitignore file or files
-# from your .gitignore file, remove the corresponding line
-# below:
-.git
+
+.git/
 .gitignore
 
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-# Test binary, build with `go test -c`
-*.test
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# Go vendoring directory
+vendor/
+
+# Local dev scripts
+scripts/launch_dev_appserver.py
+scripts/launch_firebase_emulator.py
+
+# IDE directories
+.idea/
+
+# Firebase debug logs
+**-debug.log
