@@ -11,7 +11,6 @@
       html
       {
         box-sizing: border-box;
-        overflow: -moz-scrollbars-vertical;
         overflow-y: scroll;
       }
 
@@ -37,9 +36,8 @@
     <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script>
     window.onload = function() {
-      // Begin Swagger UI call region
-      const ui = SwaggerUIBundle({
-        url: "https://serdok-pokemon-go.ew.r.appspot.com/api/openapi.yaml",
+      window.ui = SwaggerUIBundle({
+        url: `${window.location.origin}/spec/openapi.yaml`,
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
@@ -51,9 +49,6 @@
         ],
         layout: "StandaloneLayout"
       });
-      // End Swagger UI call region
-
-      window.ui = ui;
     };
   </script>
   </body>

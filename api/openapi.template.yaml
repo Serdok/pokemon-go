@@ -1,0 +1,295 @@
+openapi: 3.0.3
+info:
+  title: 'Pokémon Go'
+  description: 'API'
+  version: '1.0.0'
+
+servers:
+  - url: '{{py:server_endpoint}}'
+
+components:
+  schemas:
+    Error:
+      properties:
+        message:
+          type: string
+      additionalProperties: false
+      required: [ message ]
+    User:
+      properties:
+        email:
+          type: string
+          example: 'john.doe@example.com'
+        name:
+          type: string
+          example: 'John Doe'
+      additionalProperties: false
+      required: [ email ]
+    ResourceType:
+      type: string
+      enum: [ 'berry', 'item', 'move', 'ability', 'gender', 'nature', 'pokemon' ]
+    Pokémon:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          $ref: '#/components/schemas/ResourceType'
+    Gender:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          $ref: '#/components/schemas/ResourceType'
+    Nature:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          $ref: '#/components/schemas/ResourceType'
+    Ability:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          $ref: '#/components/schemas/ResourceType'
+    HeldItem:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          $ref: '#/components/schemas/ResourceType'
+    Move:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          $ref: '#/components/schemas/ResourceType'
+    TeamEntry:
+      properties:
+        pokemon:
+          $ref: '#/components/schemas/Pokémon'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        nature:
+          $ref: '#/components/schemas/Nature'
+        ability:
+          $ref: '#/components/schemas/Ability'
+        held_item:
+          $ref: '#/components/schemas/HeldItem'
+        moves:
+          type: array
+          minItems: 0
+          maxItems: 4
+          items:
+            $ref: '#/components/schemas/Move'
+    Team:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        pokemons:
+          type: array
+          minItems: 0
+          maxItems: 6
+          items:
+            $ref: '#/components/schemas/TeamEntry'
+
+  responses:
+    403Error:
+      description: 'Entry already exists'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: 'Email already registered'
+    404Error:
+      description: 'Resource not found'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: 'User not found'
+    500Error:
+      description: 'Internal server error'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+paths:
+  # Utilities
+  /health:
+    get:
+      summary: 'Get the health of the API'
+      tags: [ 'Utilities' ]
+      responses:
+        '200':
+          description: 'API runs fine'
+          content:
+            application/json:
+              schema:
+                type: 'object'
+                properties:
+                  heartbeat:
+                    type: 'string'
+                    example: 'API runs fine'
+
+  # User Management
+  /user:
+    post:
+      summary: 'Create a user'
+      tags: [ 'User Management' ]
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+
+      responses:
+        '201':
+          description: 'User successfully created'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '403':
+          $ref: '#/components/responses/403Error'
+  /user/{email}:
+    get:
+      summary: 'Get a user from its email'
+      tags: [ 'User Management' ]
+
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: 'User email'
+          schema:
+            type: string
+          example: 'john.doe@example.com'
+
+      responses:
+        '200':
+          description: 'User found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/404Error'
+        '500':
+          $ref: '#/components/responses/500Error'
+
+  # Team Management
+#  /teams/{email}:
+#    get:
+#      description: 'Get all teams of a user'
+#      tags: [ 'Team Management' ]
+#
+#      parameters:
+#        - name: email
+#          in: path
+#          required: true
+#          description: 'User email'
+#          schema:
+#            type: string
+#          example: 'john.doe@example.com'
+#
+#      responses:
+#        '200':
+#          description: 'Teams found'
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/Team'
+
+  /team/{email}/{teamId}:
+    get:
+      description: 'Get a team of a user'
+      tags: [ 'Team Management' ]
+
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: 'User email'
+          schema:
+            type: string
+          example: 'john.doe@example.com'
+        - name: teamId
+          in: path
+          required: true
+          description: 'Team id'
+          schema:
+            type: integer
+          example: '1'
+
+      responses:
+        '200':
+          description: 'Team found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+              example:
+                id: 1
+                name: 'My team'
+                pokemons:
+                  - pokemon:
+                      id: 3
+                      name: 'venusaur'
+                      category: 'pokemon'
+                    gender:
+                      id: 1
+                      name: 'female'
+                      category: 'gender'
+                    nature:
+                      id: 5
+                      name: 'timid'
+                      category: 'nature'
+                    ability:
+                      id: 34
+                      name: 'chlorophyll'
+                      category: 'ability'
+                    held_item:
+                      id: 247
+                      name: 'life-orb'
+                      category: 'item'
+                    moves:
+                      - id: 437
+                        name: 'frenzy-plant'
+                        category: 'move'
+                      - id: 311
+                        name: 'weather-ball'
+                        category: 'move'
+                      - id: 414
+                        name: 'earth-power'
+                        category: 'move'
+                      - id: 79
+                        name: 'sleep-powder'
+                        category: 'move'

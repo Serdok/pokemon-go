@@ -1,2 +1,11 @@
 # Project private API keys
 firebase-adminsdk.json
+
+# Vendor files
+vendor/
+
+# Script-generated files
+api/openapi.yaml
+
+# Firebase logs
+**-debug.log
