@@ -11,7 +11,8 @@ automatic_scaling:
   max_pending_latency: 300ms
 
 env_variables:
-  FIREBASE_CONFIG_FILE: 'firebase-adminsdk.json'
+  FIREBASE_CONFIG: 'firebase-adminsdk.json'
+  FIRESTORE_EMULATOR_HOST: localhost:9100
 
 handlers:
   - url: /api
