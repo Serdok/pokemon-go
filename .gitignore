@@ -1,5 +1,7 @@
 # Project private API keys
 firebase-adminsdk.json
+github-sa.key.json
+.secrets
 
 # Vendor files
 vendor/
