@@ -1,0 +1,23 @@
+name: 'Deploy to AppEngine'
+
+on:
+  push:
+    branches: [ 'trunk' ]
+
+jobs:
+  'deploy':
+    name: 'Deploy to AppEngine'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: 'Authenticate'
+        id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+      - name: 'Deploy'
+        uses: 'google-github-actions/deploy-appengine@v0'
+
