@@ -4,9 +4,9 @@ API endpoints to provide auth and interaction for the website
 
 ### Endpoints
 
-See https://serdok-pokemon-go.ew.r.appspot.com/api/index.html.
+See https://serdok-pokemon-go.ew.r.appspot.com/index.html.
 
-The specification is located at https://serdok-pokemon-go.ew.r.appspot.com/api/openapi.yaml
+The specification is located at https://serdok-pokemon-go.ew.r.appspot.com/spec/openapi.yaml
 
 ### Use
 

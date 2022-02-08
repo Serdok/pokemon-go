@@ -15,8 +15,13 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@v2'
+      - name: 'Setup Python'
+        uses: 'actions/setup-python@v2'
+        with:
+          python-version: '3.x'
+      - name: 'Generate openapi.yaml'
+        run: 'python ./scripts/openapi_config.py'
       - name: 'Authenticate'
-        id: 'auth'
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
