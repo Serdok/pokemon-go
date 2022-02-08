@@ -25,7 +25,12 @@ handlers:
     static_files: api/openapi.yaml
     upload: api/openapi.yaml
 
-    # All URLs ending in .html, .css, .js, .png are treated as paths to static files in the static/ directory
+  # All URLs ending in .html, .css, .js, .png are treated as paths to static files in the static/ directory
   - url: /(.*\.(html|css|js|png))$
     static_files: static/\1
     upload: static/.*\.(html|css|js|png)$
+
+  # All URLs served under the /api route are redirected to the main.go file
+  - url: /api
+    script: cmd/main.go
+
