@@ -18,7 +18,7 @@ jobs:
       - name: 'Setup Python'
         uses: 'actions/setup-python@v2'
         with:
-          python-version: '2.x'
+          python-version: '3.x'
       - name: 'Install dependencies'
         run: |
           python -m pip install --upgrade pip
@@ -33,4 +33,6 @@ jobs:
         uses: 'google-github-actions/deploy-appengine@v0'
         with:
           deliverables: 'app.yaml'
+        env:
+          'CLOUDSDK_PYTHON': '/usr/bin/python2'
 
