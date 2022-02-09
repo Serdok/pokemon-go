@@ -43,12 +43,14 @@ jobs:
           pip install -r requirements.txt
       - name: 'Generate app.yaml'
         run: |
-          python ./scripts/app_config.py ${{ secrets.FIREBASE_CONFIG }}
-      - name: 'Upload artifact'
+          echo "${{ secrets.FIREBASE_CONFIG }}" > firebase-adminsdk.json
+          python ./scripts/app_config.py ${{ github.workspace }}/firebase-adminsdk.json
+      - name: 'Upload artifacts'
         uses: 'actions/upload-artifact@v2'
         with:
-          name: 'app'
-          path: '${{ github.workspace }}/app.yaml'
+          name: 'AppEngine'
+          path: |
+            '${{ github.workspace }}/app.yaml'
           retention-days: 1
 
   'deploy':
@@ -70,8 +72,11 @@ jobs:
       - name: 'Download app.yaml'
         uses: 'actions/download-artifact@v2'
         with:
-          name: 'app'
+          name: 'AppEngine'
           path: '${{ github.workspace }}'
+      - name: 'Get the Firebase config'
+        run: |
+          echo "${{ secrets.FIREBASE_CONFIG }}" > firebase-adminsdk.json
       - name: 'Authenticate'
         uses: 'google-github-actions/auth@v0'
         with:
