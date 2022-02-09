@@ -11,7 +11,7 @@ automatic_scaling:
   max_pending_latency: 300ms
 
 env_variables:
-  FIREBASE_CONFIG: 'firebase-adminsdk.json'
+  FIREBASE_CONFIG: '{{py:firebase_config}}'
   FIRESTORE_EMULATOR_HOST: localhost:9100
 
 handlers:
