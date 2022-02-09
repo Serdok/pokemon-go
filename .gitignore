@@ -8,6 +8,7 @@ vendor/
 
 # Script-generated files
 api/openapi.yaml
+app.yaml
 
 # Firebase logs
 **-debug.log

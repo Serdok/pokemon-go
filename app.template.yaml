@@ -1,0 +1,31 @@
+runtime: go115
+service: default
+main: ./cmd/
+
+instance_class: F1
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 0
+  max_instances: 1
+  min_pending_latency: 100ms
+  max_pending_latency: 300ms
+
+env_variables:
+  FIREBASE_CONFIG: '{{py:firebase_config}}'
+  FIRESTORE_EMULATOR_HOST: localhost:9100
+
+handlers:
+  # Define root path of the app
+  - url: /
+    static_files: static/index.html
+    upload: static/index.html
+
+  # Upload openapi.yaml to /spec/openapi.yaml URL (for swagger-ui)
+  - url: /spec/openapi.yaml
+    static_files: api/openapi.yaml
+    upload: api/openapi.yaml
+
+    # All URLs ending in .html, .css, .js, .png are treated as paths to static files in the static/ directory
+  - url: /(.*\.(html|css|js|png))$
+    static_files: static/\1
+    upload: static/.*\.(html|css|js|png)$
