@@ -44,7 +44,7 @@ jobs:
       - name: 'Generate app.yaml'
         run: |
           echo "${{ secrets.FIREBASE_CONFIG }}" > firebase-adminsdk.json
-          python ./scripts/app_config.py ${{ github.workspace }}/firebase-adminsdk.json
+          python ./scripts/app_config.py './firebase-adminsdk.json'
       - name: 'Upload artifacts'
         uses: 'actions/upload-artifact@v2'
         with:
