@@ -204,29 +204,29 @@ paths:
           $ref: '#/components/responses/500Error'
 
   # Team Management
-#  /teams/{email}:
-#    get:
-#      description: 'Get all teams of a user'
-#      tags: [ 'Team Management' ]
-#
-#      parameters:
-#        - name: email
-#          in: path
-#          required: true
-#          description: 'User email'
-#          schema:
-#            type: string
-#          example: 'john.doe@example.com'
-#
-#      responses:
-#        '200':
-#          description: 'Teams found'
-#          content:
-#            application/json:
-#              schema:
-#                type: array
-#                items:
-#                  $ref: '#/components/schemas/Team'
+  /teams/{email}:
+    get:
+      description: 'Get all teams of a user'
+      tags: [ 'Team Management' ]
+
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: 'User email'
+          schema:
+            type: string
+          example: 'john.doe@example.com'
+
+      responses:
+        '200':
+          description: 'Teams found'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
 
   /team/{email}/{teamId}:
     get:
