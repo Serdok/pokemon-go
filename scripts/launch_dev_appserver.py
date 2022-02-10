@@ -1,3 +1,4 @@
+import os
 import platform
 import subprocess
 import sys
@@ -9,6 +10,9 @@ app_engine_url = 'http://localhost:8080'
 
 def run_windows():
     try:
+        environ = os.environ.copy()
+        environ["FIREBASE_CONFIG"] = './firebase.key.json'
+        environ["FIRESTORE_EMULATOR_HOST"] = 'localhost:9100'
         process = subprocess.Popen(
             [
                 'python.exe',
@@ -16,6 +20,7 @@ def run_windows():
                 'app.yaml',
                 '--port=8080'
             ],
+            env=environ,
             stdout=sys.stdout
         )
         process.communicate()

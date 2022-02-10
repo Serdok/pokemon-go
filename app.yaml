@@ -10,10 +10,6 @@ automatic_scaling:
   min_pending_latency: 100ms
   max_pending_latency: 300ms
 
-env_variables:
-  FIREBASE_CONFIG: 'firebase-adminsdk.json'
-  FIRESTORE_EMULATOR_HOST: localhost:9100
-
 handlers:
   # Define root path of the app
   - url: /
@@ -30,7 +26,4 @@ handlers:
     static_files: static/\1
     upload: static/.*\.(html|css|js|png)$
 
-  # All URLs served under the /api route are redirected to the main.go file
-  - url: /api
-    script: cmd/main.go
-
+  # Everything else will be redirected to the Go application

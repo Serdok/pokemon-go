@@ -28,22 +28,56 @@ jobs:
           path: '${{ github.workspace }}/api/openapi.yaml'
           retention-days: 7
 
+#  'generate-app':
+#    name: 'Generate AppEngine deployment file'
+#    runs-on: 'ubuntu-latest'
+#    steps:
+#      - name: 'Checkout'
+#        uses: 'actions/checkout@v2'
+#      - name: 'Setup Python'
+#        uses: 'actions/setup-python@v2'
+#        with:
+#          python-version: '3.x'
+#      - name: 'Install dependencies'
+#        run: |
+#          pip install -r requirements.txt
+#      - name: 'Generate app.yaml'
+#        run: |
+#          echo "${{ secrets.FIREBASE_CONFIG }}" > firebase-adminsdk.json
+#          python ./scripts/app_config.py ${{ github.workspace }}/firebase-adminsdk.json
+#      - name: 'Upload artifacts'
+#        uses: 'actions/upload-artifact@v2'
+#        with:
+#          name: 'AppEngine'
+#          path: |
+#            '${{ github.workspace }}/app.yaml'
+#          retention-days: 1
+
   'deploy':
     name: 'Deploy to AppEngine'
     permissions:
       contents: 'read'
       id-token: 'write'
+#    needs: [ 'generate-api', 'generate-app' ]
     needs: [ 'generate-api' ]
 
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@v2'
-      - name: 'Download artifact'
+      - name: 'Download openapi.yaml'
         uses: 'actions/download-artifact@v2'
         with:
           name: 'openapi-spec'
           path: '${{ github.workspace }}/api'
+#      - name: 'Download app.yaml'
+#        uses: 'actions/download-artifact@v2'
+#        with:
+#          name: 'AppEngine'
+#          path: '${{ github.workspace }}'
+#      - name: 'Get the Firebase config'
+#        run: |
+#          echo "${{ secrets.FIREBASE_CONFIG }}" > firebase-adminsdk.json
       - name: 'Authenticate'
         uses: 'google-github-actions/auth@v0'
         with:
@@ -52,4 +86,6 @@ jobs:
         uses: 'google-github-actions/deploy-appengine@v0'
         with:
           deliverables: 'app.yaml'
+        env:
+          FIREBASE_CONFIG: '${{ secrets.FIREBASE_CONFIG }}'
 
