@@ -1,5 +1,5 @@
 # Project private API keys
-firebase-adminsdk.json
+firebase.key.json
 github-sa.key.json
 .secrets
 
@@ -8,7 +8,9 @@ vendor/
 
 # Script-generated files
 api/openapi.yaml
-app.yaml
 
 # Firebase logs
 **-debug.log
+
+# IDE files
+.idea/

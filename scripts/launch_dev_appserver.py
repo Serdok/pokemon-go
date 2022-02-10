@@ -1,16 +1,18 @@
+import os
 import platform
 import subprocess
 import sys
 
 from openapi_config import process_openapi_template_file
-from app_config import process_app_template_file
 
 app_engine_url = 'http://localhost:8080'
-firebase_config = './firebase-adminsdk.json'
 
 
 def run_windows():
     try:
+        environ = os.environ.copy()
+        environ["FIREBASE_CONFIG"] = './firebase.key.json'
+        environ["FIRESTORE_EMULATOR_HOST"] = 'localhost:9100'
         process = subprocess.Popen(
             [
                 'python.exe',
@@ -18,6 +20,7 @@ def run_windows():
                 'app.yaml',
                 '--port=8080'
             ],
+            env=environ,
             stdout=sys.stdout
         )
         process.communicate()
@@ -29,7 +32,6 @@ def run_windows():
 if __name__ == '__main__':
     system = platform.system()
     process_openapi_template_file(app_engine_url)
-    process_app_template_file(firebase_config)
 
     if system == "Windows":
         run_windows()
