@@ -10,10 +10,6 @@ automatic_scaling:
   min_pending_latency: 100ms
   max_pending_latency: 300ms
 
-env_variables:
-  FIREBASE_CONFIG: '{{py:firebase_config}}'
-  FIRESTORE_EMULATOR_HOST: localhost:9100
-
 handlers:
   # Define root path of the app
   - url: /
@@ -25,7 +21,9 @@ handlers:
     static_files: api/openapi.yaml
     upload: api/openapi.yaml
 
-    # All URLs ending in .html, .css, .js, .png are treated as paths to static files in the static/ directory
+  # All URLs ending in .html, .css, .js, .png are treated as paths to static files in the static/ directory
   - url: /(.*\.(html|css|js|png))$
     static_files: static/\1
     upload: static/.*\.(html|css|js|png)$
+
+  # Everything else will be redirected to the Go application
