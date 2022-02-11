@@ -1,41 +1,48 @@
-package user
+package controllers
 
 import (
 	"context"
 	"encoding/json"
-	firebase "firebase.google.com/go"
 	"github.com/Serdok/pokemon-go/internal/api/mocking"
-	app "github.com/Serdok/pokemon-go/internal/firebase"
+	app "github.com/Serdok/pokemon-go/internal/database/firebase"
+	"github.com/Serdok/pokemon-go/internal/models"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
+	"github.com/pkg/errors"
 	"net/http/httptest"
 	"testing"
 )
 
-var _ *firebase.App
-
 func TestUser(t *testing.T) {
-	var err error
-	ctx := context.Background()
-	_, err = app.CreateApp(ctx)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	t.Run("User=create", createUser)
 	t.Run("User=get", getUser)
 }
 
-func createUser(t *testing.T) {
-	var err error
+func setup() (*UserController, *gin.Context, *httptest.ResponseRecorder, error) {
+	ctx := context.Background()
+
+	// Create database
+	db, err := app.New(ctx)
+	if err != nil {
+		return nil, nil, nil, errors.Wrap(err, "Failed to attach database instance")
+	}
+	ctl := New(db)
 
 	// Create context
 	gin.SetMode(gin.TestMode)
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	want := User{
+	return ctl, c, w, nil
+}
+
+func createUser(t *testing.T) {
+	ctl, c, w, err := setup()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	want := models.User{
 		Uid:       "uid-test",
 		FirstName: "Anass",
 		LastName:  "Lahnin",
@@ -43,7 +50,7 @@ func createUser(t *testing.T) {
 
 	// Execute call
 	mocking.MockBody(c, "POST", want)
-	CreateUser(c)
+	ctl.Create(c)
 
 	// Check return codes
 	var body gin.H
@@ -53,7 +60,7 @@ func createUser(t *testing.T) {
 	}
 
 	// Check body contents
-	var got User
+	var got models.User
 	if body["user"] == nil {
 		t.Fatalf("User - create: Expected %v, got %v", want, body)
 	}
@@ -67,14 +74,12 @@ func createUser(t *testing.T) {
 }
 
 func getUser(t *testing.T) {
-	var err error
+	ctl, c, w, err := setup()
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	// Create context
-	gin.SetMode(gin.TestMode)
-	w := httptest.NewRecorder()
-	c, _ := gin.CreateTestContext(w)
-
-	want := User{
+	want := models.User{
 		Uid:       "uid-test",
 		FirstName: "Anass",
 		LastName:  "Lahnin",
@@ -87,7 +92,7 @@ func getUser(t *testing.T) {
 			Value: want.Uid,
 		},
 	})
-	GetUser(c)
+	ctl.Get(c)
 
 	// Check return codes
 	var body gin.H
@@ -97,7 +102,7 @@ func getUser(t *testing.T) {
 	}
 
 	// Check body contents
-	var got User
+	var got models.User
 	if body["user"] == nil {
 		t.Fatalf("User - get: Expected %v, got %v", want, body)
 	}

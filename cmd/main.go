@@ -1,36 +1,36 @@
 package main
 
 import (
-	"context"
 	"github.com/Serdok/pokemon-go/internal/api"
-	fb "github.com/Serdok/pokemon-go/internal/firebase"
+	"github.com/Serdok/pokemon-go/internal/database/firebase"
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
+	"golang.org/x/net/context"
 	"log"
 )
 
-func setupRouter() *gin.Engine {
+func setupRouter() (*gin.Engine, error) {
+	ctx := context.Background()
+
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	api.DefineRoutes(router.Group("api"))
-	return router
+	db, err := firebase.New(ctx)
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to create database connector")
+	}
+
+	api.DefineRoutes(router.Group("api"), db)
+
+	return router, nil
 }
 
 func main() {
-	ctx := context.Background()
-
-	app, err := fb.CreateApp(ctx)
+	router, err := setupRouter()
 	if err != nil {
-		log.Fatalln("Failed to start firebase instance:", err)
+		log.Fatalln("failed to setup router:", err)
 	}
-
-	_, err = app.Firestore(ctx)
-	if err != nil {
-		log.Fatalln("Failed to get firestore instance:", err)
-	}
-
-	router := setupRouter()
 
 	err = router.Run()
 	if err != nil {
