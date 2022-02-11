@@ -8,4 +8,7 @@ require (
 	github.com/pkg/errors v0.9.1
 )
 
-require cloud.google.com/go/firestore v1.6.1 // indirect
+require (
+	cloud.google.com/go/firestore v1.6.1 // indirect
+	github.com/mitchellh/mapstructure v1.4.3
+)

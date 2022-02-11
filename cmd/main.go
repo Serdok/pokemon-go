@@ -8,6 +8,15 @@ import (
 	"log"
 )
 
+func setupRouter() *gin.Engine {
+	router := gin.New()
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
+
+	api.DefineRoutes(router.Group("api"))
+	return router
+}
+
 func main() {
 	ctx := context.Background()
 
@@ -21,11 +30,7 @@ func main() {
 		log.Fatalln("Failed to get firestore instance:", err)
 	}
 
-	router := gin.New()
-	router.Use(gin.Logger())
-	router.Use(gin.Recovery())
-
-	api.DefineRoutes(router.Group("api"))
+	router := setupRouter()
 
 	err = router.Run()
 	if err != nil {
