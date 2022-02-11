@@ -48,7 +48,6 @@ func createUser(t *testing.T) {
 	// Check return codes
 	var body gin.H
 	err = json.Unmarshal(w.Body.Bytes(), &body)
-	t.Log(w.Code)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,7 +92,6 @@ func getUser(t *testing.T) {
 	// Check return codes
 	var body gin.H
 	err = json.Unmarshal(w.Body.Bytes(), &body)
-	t.Log(w.Code)
 	if err != nil {
 		t.Fatal(err)
 	}
