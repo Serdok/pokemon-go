@@ -21,7 +21,7 @@ func setupRouter() (*gin.Engine, error) {
 		return nil, errors.Wrap(err, "Failed to create database connector")
 	}
 
-	api.DefineRoutes(router.Group("api"), db)
+	api.DefineRoutes(router.Group("api"), ctx, db)
 
 	return router, nil
 }

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"github.com/Serdok/pokemon-go/internal/api/v1/health"
 	"github.com/Serdok/pokemon-go/internal/api/v1/team"
 	"github.com/Serdok/pokemon-go/internal/controllers"
@@ -8,21 +9,21 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func DefineRoutes(router *gin.RouterGroup, db *database.Storage) {
+func DefineRoutes(router *gin.RouterGroup, ctx context.Context, db *database.Storage) {
 	// /v1 routes
 	v1 := router.Group("v1")
 	v1.GET("/health", health.GetHealth)
 
 	{
-		userCtl := controllers.New(db)
+		userCtl := controllers.New(ctx, db)
 		userGrp := v1.Group("user")
 		userGrp.POST("/", userCtl.Create)
-		userGrp.GET("/:email", userCtl.Get)
+		userGrp.GET("/:uid", userCtl.Get)
 	}
 
 	{
 		teamGrp := v1.Group("team")
-		teamGrp.GET("/:email", team.GetTeams)
-		teamGrp.GET("/:email/:teamId", team.GetTeam)
+		teamGrp.GET("/:uid", team.GetTeams)
+		teamGrp.GET("/:uid/:teamId", team.GetTeam)
 	}
 }
