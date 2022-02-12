@@ -14,8 +14,8 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	t.Run("User=create", createUser)
-	t.Run("User=get", getUser)
+	createUser(t)
+	getUser(t)
 }
 
 func setup() (*UserController, *gin.Context, *httptest.ResponseRecorder, error) {
@@ -26,7 +26,7 @@ func setup() (*UserController, *gin.Context, *httptest.ResponseRecorder, error) 
 	if err != nil {
 		return nil, nil, nil, errors.Wrap(err, "Failed to attach database instance")
 	}
-	ctl := New(db)
+	ctl := New(ctx, db)
 
 	// Create context
 	gin.SetMode(gin.TestMode)
@@ -43,7 +43,7 @@ func createUser(t *testing.T) {
 	}
 
 	want := models.User{
-		Uid:       "uid-test",
+		Uid:       "anass-lahnin",
 		FirstName: "Anass",
 		LastName:  "Lahnin",
 	}
@@ -80,7 +80,7 @@ func getUser(t *testing.T) {
 	}
 
 	want := models.User{
-		Uid:       "uid-test",
+		Uid:       "anass-lahnin",
 		FirstName: "Anass",
 		LastName:  "Lahnin",
 	}
@@ -88,7 +88,7 @@ func getUser(t *testing.T) {
 	// Execute call
 	mocking.MockParam(c, "GET", []gin.Param{
 		{
-			Key:   "email",
+			Key:   "uid",
 			Value: want.Uid,
 		},
 	})
