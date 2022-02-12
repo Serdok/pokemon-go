@@ -13,18 +13,22 @@ components:
       properties:
         message:
           type: string
+        error:
+          type: string
       additionalProperties: false
-      required: [ message ]
+      required: [ 'message', 'error' ]
     User:
       properties:
-        email:
+        uid:
           type: string
-          example: 'john.doe@example.com'
-        name:
+        first_name:
           type: string
-          example: 'John Doe'
+          example: 'John'
+        last_name:
+          type: string
+          example: 'Doe'
       additionalProperties: false
-      required: [ email ]
+      required: [ 'uid' ]
     ResourceType:
       type: string
       enum: [ 'berry', 'item', 'move', 'ability', 'gender', 'nature', 'pokemon' ]
@@ -174,19 +178,18 @@ paths:
                     $ref: '#/components/schemas/User'
         '403':
           $ref: '#/components/responses/403Error'
-  /user/{email}:
+  /user/{uid}:
     get:
-      summary: 'Get a user from its email'
+      summary: 'Get a user from its uid'
       tags: [ 'User Management' ]
 
       parameters:
-        - name: email
+        - name: uid
           in: path
           required: true
-          description: 'User email'
+          description: 'User uid'
           schema:
             type: string
-          example: 'john.doe@example.com'
 
       responses:
         '200':
@@ -204,19 +207,18 @@ paths:
           $ref: '#/components/responses/500Error'
 
   # Team Management
-  /teams/{email}:
+  /teams/{uid}:
     get:
       description: 'Get all teams of a user'
       tags: [ 'Team Management' ]
 
       parameters:
-        - name: email
+        - name: uid
           in: path
           required: true
-          description: 'User email'
+          description: 'User uid'
           schema:
             type: string
-          example: 'john.doe@example.com'
 
       responses:
         '200':
@@ -228,19 +230,18 @@ paths:
                 items:
                   $ref: '#/components/schemas/Team'
 
-  /team/{email}/{teamId}:
+  /team/{uid}/{teamId}:
     get:
       description: 'Get a team of a user'
       tags: [ 'Team Management' ]
 
       parameters:
-        - name: email
+        - name: uid
           in: path
           required: true
-          description: 'User email'
+          description: 'User uid'
           schema:
             type: string
-          example: 'john.doe@example.com'
         - name: teamId
           in: path
           required: true
