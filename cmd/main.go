@@ -1,11 +1,11 @@
 package main
 
 import (
+	"context"
 	"github.com/Serdok/pokemon-go/internal/api"
 	"github.com/Serdok/pokemon-go/internal/database/firebase"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
-	"golang.org/x/net/context"
 	"log"
 )
 
