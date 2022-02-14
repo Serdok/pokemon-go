@@ -54,4 +54,5 @@ jobs:
           deliverables: 'app.yaml'
         env:
           FIREBASE_CONFIG: '${{ secrets.FIREBASE_CONFIG }}'
+          GIN_MODE: 'release'
 
