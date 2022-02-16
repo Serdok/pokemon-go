@@ -207,7 +207,7 @@ paths:
           $ref: '#/components/responses/500Error'
 
   # Team Management
-  /teams/{uid}:
+  /teams/{user}:
     get:
       description: 'Get all teams of a user'
       tags: [ 'Team Management' ]
@@ -230,19 +230,51 @@ paths:
                 items:
                   $ref: '#/components/schemas/Team'
 
-  /team/{uid}/{teamId}:
-    get:
-      description: 'Get a team of a user'
+    post:
+      description: 'Add a team to a user'
       tags: [ 'Team Management' ]
 
       parameters:
-        - name: uid
+        - name: user
           in: path
           required: true
           description: 'User uid'
           schema:
             type: string
-        - name: teamId
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+
+      responses:
+        '201':
+          description: 'Team successfully added'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/Team'
+        '403':
+          $ref: '#/components/responses/403Error'
+
+  /team/{user}/{id}:
+    get:
+      description: 'Get a team of a user'
+      tags: [ 'Team Management' ]
+
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: 'User uid'
+          schema:
+            type: string
+        - name: id
           in: path
           required: true
           description: 'Team id'

@@ -35,5 +35,8 @@ func New(ctx context.Context) (*database.Storage, error) {
 		User: &FireStore{
 			db: fs,
 		},
+		Team: &FireStore{
+			db: fs,
+		},
 	}, nil
 }
