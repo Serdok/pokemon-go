@@ -3,7 +3,6 @@ package firebase
 import (
 	"context"
 	"github.com/Serdok/pokemon-go/internal/models"
-	"log"
 )
 
 func (fs *FireStore) Create(ctx context.Context, user *models.User) (created *models.User, err error) {
@@ -34,7 +33,6 @@ func (fs *FireStore) GetByUid(ctx context.Context, uid string) (user *models.Use
 		return nil, err
 	}
 
-	log.Println(snap.Data())
 	err = snap.DataTo(user)
 	return user, err
 }

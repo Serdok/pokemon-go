@@ -5,7 +5,6 @@ import (
 	"github.com/Serdok/pokemon-go/internal/database"
 	"github.com/Serdok/pokemon-go/internal/models"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 )
 
@@ -14,7 +13,7 @@ type UserController struct {
 	storage *database.Storage
 }
 
-func New(ctx context.Context, stg *database.Storage) *UserController {
+func NewUserController(ctx context.Context, stg *database.Storage) *UserController {
 	return &UserController{
 		ctx:     ctx,
 		storage: stg,
@@ -50,7 +49,6 @@ func (ctl *UserController) Create(c *gin.Context) {
 
 func (ctl *UserController) Get(c *gin.Context) {
 	uid := c.Param("uid")
-	log.Println(uid)
 	user, err := ctl.storage.User.GetByUid(ctl.ctx, uid)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
