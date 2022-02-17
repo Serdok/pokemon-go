@@ -5,6 +5,7 @@ import (
 	"log"
 )
 
+// VerifyToken verifies that the given token is valid using firebase Auth
 func (fb Firebase) VerifyToken(ctx context.Context, token string) error {
 	tok, err := fb.auth.VerifyIDTokenAndCheckRevoked(ctx, token)
 	if err != nil {

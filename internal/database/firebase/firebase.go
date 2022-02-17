@@ -1,3 +1,7 @@
+// Package firebase
+/*
+	The package firebase implements low-level database interactions using the firebase v4 SDK
+*/
 package firebase
 
 import (
@@ -7,10 +11,13 @@ import (
 	"github.com/Serdok/serdok-pokemon-go/internal/database"
 )
 
+// Firebase wraps all used connectors
 type Firebase struct {
-	auth *a.Client
+	auth *a.Client // firebase Auth
 }
 
+// New creates a new database connector with an active connection to the firebase project as set in
+// the `FIREBASE_CONFIG` environment variable
 func New(ctx context.Context) *database.Database {
 	// Connect to Firebase using the FIREBASE_CONFIG env to get config values
 	app, err := f.NewApp(ctx, nil)
@@ -31,8 +38,4 @@ func New(ctx context.Context) *database.Database {
 	return &database.Database{
 		User: fb,
 	}
-}
-
-func (fb Firebase) Close() {
-
 }
