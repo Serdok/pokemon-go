@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@v2'
-      - name: 'Upload Artefact'
-        uses: 'actions/upload-artefact@v2'
+      - name: 'Upload Artifact'
+        uses: 'actions/upload-artifact@v2'
         with:
           name: 'app'
           path: '${{ github.workspace }}'
@@ -25,8 +25,8 @@ jobs:
       id-token: 'write'
 
     steps:
-      - name: 'Download artefact'
-        uses: 'actions/download-artefact@v2'
+      - name: 'Download artifact'
+        uses: 'actions/download-artifact@v2'
         with:
           name: 'app'
           path: '${{ github.workspace }}'
@@ -50,8 +50,8 @@ jobs:
       id-token: 'write'
 
     steps:
-      - name: 'Download artefact'
-        uses: 'actions/download-artefact@v2'
+      - name: 'Download artifact'
+        uses: 'actions/download-artifact@v2'
         with:
           name: 'app'
           path: '${{ github.workspace }}'
