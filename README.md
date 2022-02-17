@@ -16,6 +16,11 @@ In case you want to run the API locally, a Dockerfile has been provided. Run `do
 
 The application uses Firebase for its authentication and database functionality. To run a mock database locally, you can configure a simple firebase project and get the emulators. More info [here](https://firebase.google.com/docs/emulator-suite)
 
+You can manipulate the following values using environment variables:
+
+- The port to use for the server: `PORT=8080` (defaults to first `8080` if not taken)
+- The mode of the server: `GIN_MODE=debug|release` (defaults to `debug`)
+
 
 ## Author
 
