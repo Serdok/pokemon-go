@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/Serdok/serdok-pokemon-go/internal/database/firebase"
 	"github.com/Serdok/serdok-pokemon-go/internal/routes"
 	"github.com/gin-gonic/gin"
 )
@@ -9,11 +10,10 @@ import (
 func main() {
 	// Create the router
 	ctx := context.Background()
-	router := newRouter(ctx)
+	router := newRouter()
 
-	// TODO: Set-up connection to firebase here
-
-	routes.DefineRoutes(router.RouterGroup)
+	fb := firebase.New(ctx)
+	routes.DefineRoutes(router.RouterGroup, ctx, *fb)
 
 	// Start the server (using env PORT variable)
 	err := router.Run()
@@ -22,7 +22,7 @@ func main() {
 	}
 }
 
-func newRouter(_ context.Context) *gin.Engine {
+func newRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())

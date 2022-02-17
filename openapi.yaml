@@ -3,22 +3,71 @@ info:
   title: Pokémon Go by Serdok
   description: Endpoints for Pokémon Go by Serdok
   version: 1.0.0
+
 host: serdok-pokemon-go.appspot.com
+
 consumes:
   - application/json
 produces:
   - application/json
+
 schemes:
   - https
+
+securityDefinitions:
+  'firebase':
+    authorizationUrl: ''
+    flow: 'implicit'
+    type: 'oauth2'
+    x-google-issuer: 'https://securetoken.google.com/serdok-pokemon-go'
+    x-google-jwks_uri: 'https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com'
+    x-google-audiences: 'serdok-pokemon-go'
+
 paths:
   '/echo':
     get:
       description: 'Echo a message from the server'
       operationId: 'echo'
+
       produces:
-        - application/json
+        - 'application/json'
+
       responses:
         200:
           description: 'Success'
           schema:
             type: string
+
+  '/check':
+    get:
+      description: 'Echo a message from the server'
+      operationId: 'check'
+      security:
+        - firebase: []
+
+      produces:
+        - 'application/json'
+
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: string
+        401:
+          description: 'Unauthorized'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              error:
+                type: string
+        406:
+          description: 'Not Acceptable'
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              error:
+                type: string

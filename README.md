@@ -20,6 +20,8 @@ You can manipulate the following values using environment variables:
 
 - The port to use for the server: `PORT=8080` (defaults to first `8080` if not taken)
 - The mode of the server: `GIN_MODE=debug|release` (defaults to `debug`)
+- The firebase JSON config: `FIREBASE_CONFIG` (either a JSON value or a file name)
+- The firebase auth emulator port: `FIREBASE_AUTH_EMULATOR_HOST` (refer to the firebase.json file for the used auth port)
 
 
 ## Author

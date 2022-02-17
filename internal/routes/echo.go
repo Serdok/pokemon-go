@@ -7,5 +7,5 @@ import (
 )
 
 func HandleEcho(c *gin.Context) {
-	c.AbortWithStatusJSON(http.StatusOK, fmt.Sprintf("Hello from: %v", c.Request.URL.String()))
+	c.JSON(http.StatusOK, fmt.Sprintf("Hello from: %v", c.Request.URL.String()))
 }
