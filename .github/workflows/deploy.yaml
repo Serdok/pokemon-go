@@ -1,0 +1,68 @@
+name: 'Deploy'
+
+on:
+  push:
+    branches: [ 'trunk' ]
+
+jobs:
+  'checkout':
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v2'
+      - name: 'Upload Artefact'
+        uses: 'actions/upload-artefact@v2'
+        with:
+          name: 'app'
+          path: '${{ github.workspace }}'
+          retention-days: 1
+
+  'deploy-api':
+    runs-on: 'ubuntu-latest'
+    needs: [ 'checkout' ]
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'Download artefact'
+        uses: 'actions/download-artefact@v2'
+        with:
+          name: 'app'
+          path: '${{ github.workspace }}'
+      - name: 'Authenticate to gcloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+      - name: 'Setup gcloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: 'Deploy API specification to Cloud Endpoints'
+        run: |
+          gcloud endpoints services deploy ${{ github.workspace }}/openapi.yaml
+
+
+
+  'deploy-app':
+    runs-on: 'ubuntu-latest'
+    needs: [ 'checkout' ]
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'Download artefact'
+        uses: 'actions/download-artefact@v2'
+        with:
+          name: 'app'
+          path: '${{ github.workspace }}'
+      - name: 'Authenticate to gcloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+      - name: 'Deploy App to Cloud AppEngine'
+        uses: 'google-github-actions/deploy-appengine@v0'
+        with:
+          deliverables: 'app.yaml'
+        env:
+          GIN_MODE: 'release'
+  
