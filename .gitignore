@@ -6,3 +6,4 @@
 
 # Generated files and directories
 vendor/
+**-debug.log
