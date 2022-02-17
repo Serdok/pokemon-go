@@ -1,0 +1,24 @@
+swagger: "2.0"
+info:
+  title: Pokémon Go by Serdok
+  description: Endpoints for Pokémon Go by Serdok
+  version: 1.0.0
+host: serdok-pokemon-go.appspot.com
+consumes:
+  - application/json
+produces:
+  - application/json
+schemes:
+  - https
+paths:
+  '/echo':
+    get:
+      description: 'Echo a message from the server'
+      operationId: 'echo'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            type: string

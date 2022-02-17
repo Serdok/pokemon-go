@@ -1,0 +1,15 @@
+# Git
+.git/
+.gitignore
+
+# IDE
+.idea/
+
+# Project secrets
+**.key.json
+
+# Generated files and directories
+vendor/
+
+# Local dev
+scripts/

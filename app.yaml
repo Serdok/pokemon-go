@@ -1,0 +1,6 @@
+runtime: custom
+env: flex
+
+endpoints_api_service:
+  name: serdok-pokemon-go.appspot.com
+  rollout_strategy: managed
