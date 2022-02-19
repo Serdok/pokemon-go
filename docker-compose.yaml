@@ -7,7 +7,7 @@ services:
   app:
     build:
       context: '.'
-      dockerfile: './build/package/app.Dockerfile'
+      dockerfile: './Dockerfile'
     networks:
       - backend
     ports:
