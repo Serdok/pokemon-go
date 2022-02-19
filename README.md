@@ -16,10 +16,11 @@ In case you want to run the API locally, a Docker Compose file has been provided
 
 You can manipulate the following values using environment variables:
 
-- The port to use for the server: `PORT=8080` (defaults to first `8080` if not taken)
+- The port to use for the server: `PORT` (defaults to first `8080` if not taken)
 - The mode of the server: `GIN_MODE=debug|release` (defaults to `debug`)
 - The firebase JSON config: `FIREBASE_CONFIG` (either a JSON value or a file name)
-- The firebase auth emulator port: `FIREBASE_AUTH_EMULATOR_HOST` (refer to the firebase.json file for the used auth port)
+- The firebase auth emulator port: `FIREBASE_AUTH_EMULATOR_HOST` (use `9099` if using  docker-compose, otherwise refer to the firebase.json file for the used port)
+- The firestore emulator port: `FIRESTORE_EMULATOR_HOST` (use `8080` if using  docker-compose, otherwise refer to the firebase.json file for the used port)
 
 
 ## Author

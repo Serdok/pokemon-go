@@ -8,6 +8,13 @@
       "enabled": true,
       "host": "0.0.0.0",
       "port": 4000
+    },
+    "firestore": {
+      "port": 9100
     }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   }
 }
