@@ -94,3 +94,22 @@ func (ctl *UserCtl) Create(c *gin.Context) {
 		"user": created,
 	})
 }
+
+// Delete defined a Gin Handler to delete a user.
+// It searches the uid value in the path as a parameter with the name 'uid'
+// It responds to the client with `http.StatusNoContent` if the deletion was successful
+func (ctl *UserCtl) Delete(c *gin.Context) {
+	uid := c.Param("uid")
+	if len(uid) == 0 {
+		abortWithError(c, http.StatusBadRequest, errors.New("no uid found in parameters"))
+		return
+	}
+
+	err := ctl.db.User.Delete(ctl.ctx, uid)
+	if err != nil {
+		abortWithError(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	c.Status(http.StatusNoContent)
+}

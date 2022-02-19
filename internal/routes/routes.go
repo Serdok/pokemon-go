@@ -23,4 +23,5 @@ func DefineRoutes(grp gin.RouterGroup, ctx context.Context, db database.Database
 	user.Use(userCtl.VerifyJWT)
 	user.GET(":uid", userCtl.Get)
 	user.POST("create", userCtl.Create)
+	user.DELETE("delete/:uid", userCtl.Delete)
 }

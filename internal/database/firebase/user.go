@@ -44,3 +44,10 @@ func (fb Firebase) Create(ctx context.Context, user models.User) (*models.User, 
 	}
 	return fb.Get(ctx, user.Uid)
 }
+
+// Delete a user from its uid
+func (fb Firebase) Delete(ctx context.Context, uid string) error {
+	ref := fb.fs.Collection("users").Doc(uid)
+	_, err := ref.Delete(ctx)
+	return err
+}

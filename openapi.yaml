@@ -82,13 +82,42 @@ paths:
         - name: 'user'
           in: 'body'
           schema:
-            $ref: '#/definitions/UserParam'
+            $ref: '#/definitions/UserBody'
 
       responses:
         201:
           description: 'Success'
           schema:
             $ref: '#/definitions/UserResponse'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  '/user/delete/{uid}':
+    delete:
+      description: 'Delete a user'
+      operationId: 'delete-user'
+      security:
+        - firebase: [ ]
+
+      produces:
+        - 'application/json'
+
+      parameters:
+        - name: 'uid'
+          description: 'A user uid'
+          in: 'path'
+          required: true
+          type: string
+
+      responses:
+        204:
+          description: 'Success'
         401:
           description: 'Unauthorized'
           schema:
@@ -106,7 +135,7 @@ definitions:
         type: string
     required: [ 'uid' ]
 
-  'UserParam':
+  'UserBody':
     type: object
     properties:
       'uid':
@@ -124,4 +153,4 @@ definitions:
     properties:
       'error':
         type: string
-      
+

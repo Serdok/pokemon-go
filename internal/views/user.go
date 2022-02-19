@@ -14,4 +14,6 @@ type UserView interface {
 	Get(ctx context.Context, uid string) (*models.User, error)
 	// Create a user
 	Create(ctx context.Context, user models.User) (*models.User, error)
+	// Delete a user
+	Delete(ctx context.Context, uid string) error
 }
