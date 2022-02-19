@@ -5,6 +5,7 @@
 package firebase
 
 import (
+	"cloud.google.com/go/firestore"
 	"context"
 	f "firebase.google.com/go/v4"
 	a "firebase.google.com/go/v4/auth"
@@ -13,7 +14,8 @@ import (
 
 // Firebase wraps all used connectors
 type Firebase struct {
-	auth *a.Client // firebase Auth
+	auth *a.Client         // firebase Auth
+	fs   *firestore.Client // firebase Firestore
 }
 
 // New creates a new database connector with an active connection to the firebase project as set in
@@ -31,8 +33,14 @@ func New(ctx context.Context) *database.Database {
 		panic(err)
 	}
 
+	fs, err := app.Firestore(ctx)
+	if err != nil {
+		panic(err)
+	}
+
 	fb := Firebase{
 		auth: auth,
+		fs:   fs,
 	}
 
 	return &database.Database{
