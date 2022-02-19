@@ -2,6 +2,7 @@ package firebase
 
 import (
 	"context"
+	"github.com/Serdok/serdok-pokemon-go/internal/models"
 	"log"
 )
 
@@ -15,4 +16,31 @@ func (fb Firebase) VerifyToken(ctx context.Context, token string) error {
 
 	log.Printf("verified token: %+v\n", *tok)
 	return nil
+}
+
+// Get a user document from its uid
+func (fb Firebase) Get(ctx context.Context, uid string) (*models.User, error) {
+	ref := fb.fs.Collection("users").Doc(uid)
+	snap, err := ref.Get(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	user := new(models.User)
+	err = snap.DataTo(user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+// Create a user from given data. Uid must be unique
+func (fb Firebase) Create(ctx context.Context, user models.User) (*models.User, error) {
+	ref := fb.fs.Collection("users").Doc(user.Uid)
+
+	_, err := ref.Create(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+	return fb.Get(ctx, user.Uid)
 }

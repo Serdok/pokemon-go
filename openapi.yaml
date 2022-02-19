@@ -38,36 +38,90 @@ paths:
           schema:
             type: string
 
-  '/check':
+  '/user/{uid}':
     get:
-      description: 'Echo a message from the server'
-      operationId: 'check'
+      description: 'Get a user from its uid'
+      operationId: 'get-user'
       security:
         - firebase: []
 
       produces:
         - 'application/json'
 
+      parameters:
+        - name: 'uid'
+          description: 'A user uid'
+          in: 'path'
+          required: true
+          type: string
+
       responses:
         200:
           description: 'Success'
           schema:
-            type: string
+            $ref: '#/definitions/UserResponse'
+        404:
+          description: 'Not found'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+
+  '/user/create':
+    post:
+      description: 'Create a user'
+      operationId: 'create-user'
+      security:
+        - firebase: []
+
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+
+      parameters:
+        - name: 'user'
+          in: 'body'
+          schema:
+            $ref: '#/definitions/UserParam'
+
+      responses:
+        201:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/UserResponse'
         401:
           description: 'Unauthorized'
           schema:
-            type: object
-            properties:
-              message:
-                type: string
-              error:
-                type: string
-        406:
-          description: 'Not Acceptable'
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
           schema:
-            type: object
-            properties:
-              message:
-                type: string
-              error:
-                type: string
+            $ref: '#/definitions/ErrorResponse'
+
+definitions:
+  'User':
+    type: object
+    properties:
+      'uid':
+        type: string
+    required: [ 'uid' ]
+
+  'UserParam':
+    type: object
+    properties:
+      'uid':
+        type: string
+    required: [ 'uid' ]
+
+  'UserResponse':
+    type: object
+    properties:
+      'user':
+        $ref: '#/definitions/User'
+
+  'ErrorResponse':
+    type: object
+    properties:
+      'error':
+        type: string
+      
