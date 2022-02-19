@@ -1,0 +1,25 @@
+version: '3'
+
+networks:
+  backend:
+
+services:
+  app:
+    build:
+      context: '.'
+      dockerfile: './build/package/app.Dockerfile'
+    networks:
+      - backend
+    ports:
+      - '8080:8080'
+
+  firebase:
+    image: 'andreysenov/firebase-tools'
+    volumes:
+      - '.:/home/node'
+    networks:
+      - backend
+    ports:
+      - '4000:4000'
+      - '9099:9099'
+    command: ['firebase', 'emulators:start']
