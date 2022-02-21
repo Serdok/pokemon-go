@@ -45,5 +45,16 @@ func New(ctx context.Context) *database.Database {
 
 	return &database.Database{
 		User: fb,
+		Team: fb,
 	}
+}
+
+func (fb Firebase) Close() error {
+	// Close all services
+	err := fb.fs.Close()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

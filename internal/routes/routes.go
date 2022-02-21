@@ -24,4 +24,14 @@ func DefineRoutes(grp gin.RouterGroup, ctx context.Context, db database.Database
 	user.GET(":uid", userCtl.Get)
 	user.POST("create", userCtl.Create)
 	user.DELETE("delete/:uid", userCtl.Delete)
+
+	team := grp.Group("/team/:uid")
+	teamCtl := controllers.NewTeamCtl(ctx, db)
+	team.Use(userCtl.VerifyJWT)
+	team.GET("get-all", teamCtl.GetAll)
+	team.GET("get/:id", teamCtl.Get)
+	team.POST("create", teamCtl.Create)
+	team.PUT("update/:id", teamCtl.Update)
+	team.DELETE("delete/:id", teamCtl.Delete)
+	team.DELETE("delete", teamCtl.DeleteAll)
 }

@@ -10,4 +10,14 @@ import "github.com/Serdok/serdok-pokemon-go/internal/views"
 // Database wraps all views used to interface with its database
 type Database struct {
 	User views.UserView
+	Team views.TeamView
+}
+
+func (db Database) Close() {
+	if err := db.User.Close(); err != nil {
+		panic(err)
+	}
+	if err := db.Team.Close(); err != nil {
+		panic(err)
+	}
 }

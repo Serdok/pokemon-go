@@ -61,7 +61,7 @@ func (ctl *UserCtl) Get(c *gin.Context) {
 		return
 	}
 
-	user, err := ctl.db.User.Get(ctl.ctx, uid)
+	user, err := ctl.db.User.GetUser(ctl.ctx, uid)
 	if err != nil {
 		abortWithError(c, http.StatusInternalServerError, err)
 		return
@@ -84,7 +84,7 @@ func (ctl *UserCtl) Create(c *gin.Context) {
 		return
 	}
 
-	created, err := ctl.db.User.Create(ctl.ctx, user)
+	created, err := ctl.db.User.CreateUser(ctl.ctx, user)
 	if err != nil {
 		abortWithError(c, http.StatusBadRequest, err)
 		return
@@ -105,7 +105,7 @@ func (ctl *UserCtl) Delete(c *gin.Context) {
 		return
 	}
 
-	err := ctl.db.User.Delete(ctl.ctx, uid)
+	err := ctl.db.User.DeleteUser(ctl.ctx, uid)
 	if err != nil {
 		abortWithError(c, http.StatusInternalServerError, err)
 		return

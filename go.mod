@@ -3,14 +3,15 @@ module github.com/Serdok/serdok-pokemon-go
 go 1.17
 
 require (
+	cloud.google.com/go/firestore v1.6.1
 	firebase.google.com/go/v4 v4.7.1
 	github.com/gin-gonic/gin v1.7.7
+	github.com/mitchellh/mapstructure v1.4.3
 )
 
 require (
 	cloud.google.com/go v0.100.2 // indirect
 	cloud.google.com/go/compute v0.1.0 // indirect
-	cloud.google.com/go/firestore v1.6.1 // indirect
 	cloud.google.com/go/iam v0.2.0 // indirect
 	cloud.google.com/go/storage v1.10.0 // indirect
 	firebase.google.com/go v3.13.0+incompatible // indirect
