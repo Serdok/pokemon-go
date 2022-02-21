@@ -9,3 +9,11 @@
 	The principal use case of the controllers will be as Gin Handlers
 */
 package controllers
+
+import (
+	"github.com/gin-gonic/gin"
+)
+
+func abortWithError(c *gin.Context, status int, err error) {
+	_ = c.AbortWithError(status, err)
+}

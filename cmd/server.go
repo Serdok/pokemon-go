@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"github.com/Serdok/serdok-pokemon-go/internal/database/firebase"
+	"github.com/Serdok/serdok-pokemon-go/internal/middlewares"
 	"github.com/Serdok/serdok-pokemon-go/internal/routes"
 	"github.com/gin-gonic/gin"
 )
@@ -25,9 +26,9 @@ func main() {
 func newRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
-	router.Use(gin.Recovery())
 
 	// TODO: Set-up extra middlewares here
+	router.Use(middlewares.ErrorCatcher())
 
 	return router
 }

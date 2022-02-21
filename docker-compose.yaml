@@ -20,6 +20,7 @@ services:
     networks:
       - backend
     ports:
-      - '4000:4000'
-      - '9099:9099'
+      - '4000:4000' # UI
+      - '9099:9099' # Auth
+      - '8080:8080' # Firestore
     command: ['firebase', 'emulators:start']

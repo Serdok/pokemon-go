@@ -18,10 +18,10 @@ func DefineRoutes(grp gin.RouterGroup, ctx context.Context, db database.Database
 	grp.GET("echo", HandleEcho)
 
 	// All routes below need authentication through Firebase ID token
-	authorized := grp.Group("/")
-	{
-		userCtl := controllers.NewUserCtl(ctx, db)
-		authorized.Use(userCtl.VerifyJWT)
-		authorized.GET("check", HandleEcho)
-	}
+	user := grp.Group("/user")
+	userCtl := controllers.NewUserCtl(ctx, db)
+	user.Use(userCtl.VerifyJWT)
+	user.GET(":uid", userCtl.Get)
+	user.POST("create", userCtl.Create)
+	user.DELETE("delete/:uid", userCtl.Delete)
 }
