@@ -7,6 +7,8 @@ import (
 
 // UserView defines all methods used to interact with a user
 type UserView interface {
+	Close() error
+
 	// VerifyToken verifies that the given `token` is valid. Return `nil` if the token is valid
 	VerifyToken(ctx context.Context, token string) error
 
