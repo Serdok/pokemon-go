@@ -14,6 +14,7 @@ func main() {
 	router := newRouter()
 
 	fb := firebase.New(ctx)
+	defer fb.Close()
 	routes.DefineRoutes(router.RouterGroup, ctx, *fb)
 
 	// Start the server (using env PORT variable)

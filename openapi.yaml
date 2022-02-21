@@ -42,6 +42,7 @@ paths:
     get:
       description: 'Get a user from its uid'
       operationId: 'get-user'
+      tags: [ 'user' ]
       security:
         - firebase: []
 
@@ -65,11 +66,11 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-
   '/user/create':
     post:
       description: 'Create a user'
       operationId: 'create-user'
+      tags: [ 'user' ]
       security:
         - firebase: []
 
@@ -102,6 +103,7 @@ paths:
     delete:
       description: 'Delete a user'
       operationId: 'delete-user'
+      tags: [ 'user' ]
       security:
         - firebase: [ ]
 
@@ -127,6 +129,232 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
+  '/team/{uid}/get-all':
+    get:
+      description: 'Get all teams of a user'
+      operationId: 'get-all-teams'
+      tags: [ 'team' ]
+      security:
+        - firebase: []
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+
+      parameters:
+        - name: 'uid'
+          description: 'A user uid'
+          in: 'path'
+          required: true
+          type: string
+
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/TeamsResponse'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  '/team/{uid}/get/{id}':
+    get:
+      description: 'Get a team of a user'
+      operationId: 'get-team'
+      tags: [ 'team' ]
+      security:
+        - firebase: [ ]
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+
+      parameters:
+        - name: 'uid'
+          description: 'A user uid'
+          in: 'path'
+          required: true
+          type: string
+        - name: 'id'
+          description: 'A team id'
+          in: 'path'
+          required: true
+          type: string
+
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/TeamResponse'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  '/team/{uid}/create':
+    post:
+      description: 'Get a team of a user'
+      operationId: 'create-team'
+      tags: [ 'team' ]
+      security:
+        - firebase: [ ]
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+
+      parameters:
+        - name: 'uid'
+          description: 'A user uid'
+          in: 'path'
+          required: true
+          type: string
+        - name: 'team'
+          description: 'A team'
+          in: 'body'
+          schema:
+            $ref: '#/definitions/TeamBody'
+
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/TeamResponse'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  '/team/{uid}/update/{id}':
+    put:
+      description: 'Update a team of a user'
+      operationId: 'update-team'
+      tags: [ 'team' ]
+      security:
+        - firebase: [ ]
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+
+      parameters:
+        - name: 'uid'
+          description: 'A user uid'
+          in: 'path'
+          required: true
+          type: string
+        - name: 'id'
+          description: 'A team id'
+          in: 'path'
+          required: true
+          type: string
+        - name: 'team'
+          description: 'A team'
+          in: 'body'
+          schema:
+            $ref: '#/definitions/TeamBody'
+
+      responses:
+        200:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/TeamResponse'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  '/team/{uid}/delete/{id}':
+    delete:
+      description: 'Delete a team of a user'
+      operationId: 'delete-team'
+      tags: [ 'team' ]
+      security:
+        - firebase: [ ]
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+
+      parameters:
+        - name: 'uid'
+          description: 'A user uid'
+          in: 'path'
+          required: true
+          type: string
+        - name: 'id'
+          description: 'A team id'
+          in: 'path'
+          required: true
+          type: string
+
+      responses:
+        204:
+          description: 'Success'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  '/team/{uid}/delete':
+    delete:
+      description: 'Delete all teams of a user'
+      operationId: 'delete-all-teams'
+      tags: [ 'team' ]
+      security:
+        - firebase: [ ]
+
+      consumes:
+        - application/json
+      produces:
+        - application/json
+
+      parameters:
+        - name: 'uid'
+          description: 'A user uid'
+          in: 'path'
+          required: true
+          type: string
+
+      responses:
+        204:
+          description: 'Success'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+
 definitions:
   'User':
     type: object
@@ -134,19 +362,178 @@ definitions:
       'uid':
         type: string
     required: [ 'uid' ]
+    example:
+      'uid': 'aPOjQCKNwmterCYGZdLlCIGeBsD2'
 
-  'UserBody':
+  'Resource':
+    description: 'A Pokémon API Resource. Can be nullable'
     type: object
     properties:
-      'uid':
+      'id':
+        type: integer
+      'name':
         type: string
-    required: [ 'uid' ]
+      'category':
+        type: string
+    required: [ 'id', 'name', 'category' ]
+    discriminator: 'category'
+
+  'Pokemon':
+    allOf:
+      - $ref: '#/definitions/Resource'
+      - type: object
+        description: 'A Pokémon API Resource of type "pokemon". Can be nullable'
+        properties:
+          'category':
+            type: string
+            enum: [ 'pokemon' ]
+    example:
+      'id': 3
+      'name': 'venusaur'
+      'category': 'pokemon'
+
+  'Gender':
+    allOf:
+      - $ref: '#/definitions/Resource'
+      - type: object
+        description: 'A Pokémon API Resource of type "gender". Can be nullable'
+        properties:
+          'category':
+            type: string
+            enum: [ 'gender' ]
+    example:
+      'id': 1
+      'name': 'female'
+      'category': 'gender'
+
+
+  'Ability':
+    allOf:
+      - $ref: '#/definitions/Resource'
+      - type: object
+        description: 'A Pokémon API Resource of type "ability". Can be nullable'
+        properties:
+          'category':
+            type: string
+            enum: [ 'ability' ]
+    example:
+      'id': 34
+      'name': 'chlorophyll'
+      'category': 'ability'
+
+  'Item':
+    allOf:
+      - $ref: '#/definitions/Resource'
+      - type: object
+        description: 'A Pokémon API Resource of type "item". Can be nullable'
+        properties:
+          'category':
+            type: string
+            enum: [ 'item' ]
+    example:
+      'id': 247
+      'name': 'life-orb'
+      'category': 'item'
+
+  'Berry':
+    allOf:
+      - $ref: '#/definitions/Resource'
+      - type: object
+        description: 'A Pokémon API Resource of type "berry". Can be nullable'
+        properties:
+          'category':
+            type: string
+            enum: [ 'berry' ]
+    example:
+      'id': 10
+      'name': 'sitrus'
+      'category': 'berry'
+
+  'Move':
+    allOf:
+      - $ref: '#/definitions/Resource'
+      - type: object
+        description: 'A Pokémon API Resource of type "move". Can be nullable'
+        properties:
+          'category':
+            type: string
+            enum: [ 'move' ]
+    example:
+      'id': 188
+      'name': 'sludge-bomb'
+      'category': 'move'
+
+
+  'HeldItem':
+    allOf:
+      - $ref: '#/definitions/Item'
+      - $ref: '#/definitions/Berry'
+      - description: 'A combination of all the holdable items. Can be nullable'
+
+
+  'TeamEntry':
+    type: object
+    properties:
+      'pokemon':
+        $ref: '#/definitions/Pokemon'
+      'gender':
+        $ref: '#/definitions/Gender'
+      'ability':
+        $ref: '#/definitions/Ability'
+      'item':
+        $ref: '#/definitions/HeldItem'
+      'moves':
+        type: array
+        minItems: 4
+        maxItems: 4
+        items:
+          $ref: '#/definitions/Move'
+    required: [ 'pokemon', 'gender', 'ability', 'item', 'moves' ]
+
+  'Team':
+    type: object
+    properties:
+      'id':
+        type: string
+      'name':
+        type: string
+      'entries':
+        description: 'All 6 Pokémon that compose a team'
+        type: array
+        minItems: 6
+        maxItems: 6
+        items:
+          $ref: '#/definitions/TeamEntry'
+
+  'Teams':
+    type: array
+    items:
+      $ref: '#/definitions/Team'
+
+  'UserBody':
+    $ref: '#/definitions/User'
+
+  'TeamBody':
+    $ref: '#/definitions/Team'
+
 
   'UserResponse':
     type: object
     properties:
       'user':
         $ref: '#/definitions/User'
+
+  'TeamResponse':
+    type: object
+    properties:
+      'team':
+        $ref: '#/definitions/Team'
+
+  'TeamsResponse':
+    type: object
+    properties:
+      'teams':
+        $ref: '#/definitions/Teams'
 
   'ErrorResponse':
     type: object
