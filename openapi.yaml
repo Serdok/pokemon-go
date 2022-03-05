@@ -38,9 +38,9 @@ paths:
           schema:
             type: string
 
-  '/user/{uid}':
+  '/user/{name}':
     get:
-      description: 'Get a user from its uid'
+      description: 'Get a user from its user name'
       operationId: 'get-user'
       tags: [ 'user' ]
       security:
@@ -50,8 +50,8 @@ paths:
         - 'application/json'
 
       parameters:
-        - name: 'uid'
-          description: 'A user uid'
+        - name: 'name'
+          description: 'A user name'
           in: 'path'
           required: true
           type: string
@@ -99,7 +99,44 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-  '/user/delete/{uid}':
+  '/user/update':
+    put:
+      description: 'Update a user'
+      operationId: 'update-user'
+      tags: [ 'user' ]
+      security:
+        - firebase: []
+
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+
+      parameters:
+        - name: 'user'
+          in: body
+          schema:
+            $ref: '#/definitions/UserBody'
+
+      responses:
+        201:
+          description: 'Success'
+          schema:
+            $ref: '#/definitions/UserResponse'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: 'Not Found'
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+  '/user/delete/{name}':
     delete:
       description: 'Delete a user'
       operationId: 'delete-user'
@@ -111,7 +148,7 @@ paths:
         - 'application/json'
 
       parameters:
-        - name: 'uid'
+        - name: 'name'
           description: 'A user uid'
           in: 'path'
           required: true
@@ -129,7 +166,7 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-  '/team/{uid}/get-all':
+  '/team/{name}/get-all':
     get:
       description: 'Get all teams of a user'
       operationId: 'get-all-teams'
@@ -143,8 +180,8 @@ paths:
         - application/json
 
       parameters:
-        - name: 'uid'
-          description: 'A user uid'
+        - name: 'name'
+          description: 'A user name'
           in: 'path'
           required: true
           type: string
@@ -163,7 +200,7 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-  '/team/{uid}/get/{id}':
+  '/team/{name}/get/{id}':
     get:
       description: 'Get a team of a user'
       operationId: 'get-team'
@@ -177,8 +214,8 @@ paths:
         - application/json
 
       parameters:
-        - name: 'uid'
-          description: 'A user uid'
+        - name: 'name'
+          description: 'A user name'
           in: 'path'
           required: true
           type: string
@@ -202,7 +239,7 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-  '/team/{uid}/create':
+  '/team/{name}/create':
     post:
       description: 'Get a team of a user'
       operationId: 'create-team'
@@ -216,8 +253,8 @@ paths:
         - application/json
 
       parameters:
-        - name: 'uid'
-          description: 'A user uid'
+        - name: 'name'
+          description: 'A user name'
           in: 'path'
           required: true
           type: string
@@ -241,7 +278,7 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-  '/team/{uid}/update/{id}':
+  '/team/{name}/update/{id}':
     put:
       description: 'Update a team of a user'
       operationId: 'update-team'
@@ -255,8 +292,8 @@ paths:
         - application/json
 
       parameters:
-        - name: 'uid'
-          description: 'A user uid'
+        - name: 'name'
+          description: 'A user name'
           in: 'path'
           required: true
           type: string
@@ -285,7 +322,7 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-  '/team/{uid}/delete/{id}':
+  '/team/{name}/delete/{id}':
     delete:
       description: 'Delete a team of a user'
       operationId: 'delete-team'
@@ -299,8 +336,8 @@ paths:
         - application/json
 
       parameters:
-        - name: 'uid'
-          description: 'A user uid'
+        - name: 'name'
+          description: 'A user name'
           in: 'path'
           required: true
           type: string
@@ -322,7 +359,7 @@ paths:
           schema:
             $ref: '#/definitions/ErrorResponse'
 
-  '/team/{uid}/delete':
+  '/team/{name}/delete':
     delete:
       description: 'Delete all teams of a user'
       operationId: 'delete-all-teams'
@@ -336,8 +373,8 @@ paths:
         - application/json
 
       parameters:
-        - name: 'uid'
-          description: 'A user uid'
+        - name: 'name'
+          description: 'A user name'
           in: 'path'
           required: true
           type: string
@@ -361,9 +398,12 @@ definitions:
     properties:
       'uid':
         type: string
-    required: [ 'uid' ]
+      'name':
+        type: string
+    required: [ 'name', 'uid' ]
     example:
       'uid': 'aPOjQCKNwmterCYGZdLlCIGeBsD2'
+      'name': 'Some Random Username :^)'
 
   'Resource':
     description: 'A Pokémon API Resource. Can be nullable'

@@ -1,10 +1,12 @@
 package types
 
+type Resource string
+
 const (
-	Ability string = "ability"
-	Berry   string = "berry"
-	Gender  string = "gender"
-	Item    string = "item"
-	Move    string = "move"
-	Pokemon string = "pokemon"
+	Ability Resource = "ability"
+	Berry   Resource = "berry"
+	Gender  Resource = "gender"
+	Item    Resource = "item"
+	Move    Resource = "move"
+	Pokemon Resource = "pokemon"
 )

@@ -29,6 +29,7 @@ func newRouter() *gin.Engine {
 	router.Use(gin.Logger())
 
 	// TODO: Set-up extra middlewares here
+	router.Use(middlewares.CORSDefiner())
 	router.Use(middlewares.ErrorCatcher())
 
 	return router

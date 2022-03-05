@@ -6,6 +6,8 @@ import (
 	"github.com/Serdok/serdok-pokemon-go/internal/database"
 	"github.com/Serdok/serdok-pokemon-go/internal/models"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"net/http"
 )
 
@@ -50,20 +52,29 @@ func (ctl *UserCtl) VerifyJWT(c *gin.Context) {
 
 }
 
-// Get defines a Gin Handler to get a user by its uid.
-// It searches the uid value in the path as a parameter with the name 'uid'
+// Get defines a Gin Handler to get a user by its name.
+// It searches the name value in the path as a parameter with the name 'name'
 // It responds to the client with a `http.StatusNotFound` if the user was not found;
 // or `http.StatusOK` with the body set to the user if it was found
 func (ctl *UserCtl) Get(c *gin.Context) {
-	uid := c.Param("uid")
-	if len(uid) == 0 {
-		abortWithError(c, http.StatusBadRequest, errors.New("no uid found in parameters"))
+	name := c.Param("name")
+	if len(name) == 0 {
+		abortWithError(c, http.StatusBadRequest, errors.New("no name found in parameters"))
 		return
 	}
 
-	user, err := ctl.db.User.GetUser(ctl.ctx, uid)
+	user, err := ctl.db.User.GetUser(ctl.ctx, name)
 	if err != nil {
-		abortWithError(c, http.StatusInternalServerError, err)
+		switch status.Code(err) {
+		case codes.NotFound:
+			abortWithError(c, http.StatusNotFound, err)
+			break
+		case codes.AlreadyExists:
+			abortWithError(c, http.StatusForbidden, err)
+			break
+		default:
+			abortWithError(c, http.StatusInternalServerError, err)
+		}
 		return
 	}
 
@@ -86,7 +97,7 @@ func (ctl *UserCtl) Create(c *gin.Context) {
 
 	created, err := ctl.db.User.CreateUser(ctl.ctx, user)
 	if err != nil {
-		abortWithError(c, http.StatusBadRequest, err)
+		abortWithError(c, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -96,20 +107,39 @@ func (ctl *UserCtl) Create(c *gin.Context) {
 }
 
 // Delete defined a Gin Handler to delete a user.
-// It searches the uid value in the path as a parameter with the name 'uid'
+// It searches the name value in the path as a parameter with the name 'name'
 // It responds to the client with `http.StatusNoContent` if the deletion was successful
 func (ctl *UserCtl) Delete(c *gin.Context) {
-	uid := c.Param("uid")
-	if len(uid) == 0 {
-		abortWithError(c, http.StatusBadRequest, errors.New("no uid found in parameters"))
+	name := c.Param("name")
+	if len(name) == 0 {
+		abortWithError(c, http.StatusBadRequest, errors.New("no name found in parameters"))
 		return
 	}
 
-	err := ctl.db.User.DeleteUser(ctl.ctx, uid)
+	err := ctl.db.User.DeleteUser(ctl.ctx, name)
 	if err != nil {
 		abortWithError(c, http.StatusInternalServerError, err)
 		return
 	}
 
 	c.Status(http.StatusNoContent)
+}
+
+func (ctl *UserCtl) Update(c *gin.Context) {
+	var user models.User
+	err := c.BindJSON(&user)
+	if err != nil {
+		abortWithError(c, http.StatusBadRequest, err)
+		return
+	}
+
+	updated, err := ctl.db.User.UpdateUser(ctl.ctx, user.Name, *models.NewUserUpdate(user))
+	if err != nil {
+		abortWithError(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"user": updated,
+	})
 }

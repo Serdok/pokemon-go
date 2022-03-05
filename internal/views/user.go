@@ -13,9 +13,11 @@ type UserView interface {
 	VerifyToken(ctx context.Context, token string) error
 
 	// GetUser fetches a user from its uid.
-	GetUser(ctx context.Context, uid string) (*models.User, error)
+	GetUser(ctx context.Context, name string) (*models.User, error)
 	// CreateUser a user
 	CreateUser(ctx context.Context, user models.User) (*models.User, error)
 	// DeleteUser a user
-	DeleteUser(ctx context.Context, uid string) error
+	DeleteUser(ctx context.Context, name string) error
+	// UpdateUser updates an existing user. Fails if the user does not exist
+	UpdateUser(ctx context.Context, name string, user models.UserUpdate) (*models.User, error)
 }
