@@ -16,37 +16,21 @@ type TeamEntry struct {
 	Moves   [4]*Resource `json:"moves" firestore:"moves"`
 }
 
-type Team struct {
-	Id      string        `json:"id" firestore:"id"`
+type TeamUpdate struct {
 	Name    string        `json:"name" firestore:"name"`
 	Entries [6]*TeamEntry `json:"entries" firestore:"entries"`
 }
 
-func NewTeamEntry(pokemon *Resource, gender *Resource, ability *Resource, item *Resource, moves [4]*Resource) *TeamEntry {
-	// Assert categories
-	if pokemon.Category != types.Pokemon {
-		panic("pokemon has a wrong category")
-	}
-	if gender.Category != types.Gender {
-		panic("gender has a wrong category")
-	}
-	if ability.Category != types.Ability {
-		panic("ability has a wrong category")
-	}
-	if item.Category != types.Item && item.Category != types.Berry {
-		panic("item has a wrong category")
-	}
-	for _, move := range moves {
-		if move.Category != types.Move {
-			panic("move has a wrong category")
-		}
-	}
-
-	return &TeamEntry{pokemon, gender, ability, item, moves}
+type Team struct {
+	Id string `json:"id" firestore:"id"`
+	TeamUpdate
 }
 
-func NewTeam(id string, name string, entries [6]*TeamEntry) *Team {
-	return &Team{id, name, entries}
+func NewTeamUpdate(team Team) *TeamUpdate {
+	return &TeamUpdate{
+		Name:    team.Name,
+		Entries: team.Entries,
+	}
 }
 
 func (t *TeamEntry) UnmarshalJSON(b []byte) error {
@@ -101,7 +85,7 @@ func (t *TeamEntry) UnmarshalJSON(b []byte) error {
 	return decoder.Decode(data)
 }
 
-func checkResourceCategory(data map[string]interface{}, field string, category string) error {
+func checkResourceCategory(data map[string]interface{}, field string, category types.Resource) error {
 	value, ok := data[field]
 	if !ok {
 		return errors.New(fmt.Sprintf("no '%v' json path found", field))

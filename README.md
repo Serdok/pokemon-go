@@ -6,7 +6,7 @@ A Pokémon team management written in Go
 
 See [the public Endpoint website](https://endpointsportal.serdok-pokemon-go.cloud.goog/) to visualize all deployed endpoints
 
-## Use
+## Public use
 
 No installation required: the API endpoints are deployed at https://serdok-pokemon-go.ew.r.appspot.com/
 
@@ -22,6 +22,9 @@ You can manipulate the following values using environment variables:
 - The firebase auth emulator port: `FIREBASE_AUTH_EMULATOR_HOST` (use `9099` if using  docker-compose, otherwise refer to the firebase.json file for the used port)
 - The firestore emulator port: `FIRESTORE_EMULATOR_HOST` (use `8080` if using  docker-compose, otherwise refer to the firebase.json file for the used port)
 
+## How to use
+
+Check out the [wiki](https://github.com/Serdok/pokemon-go.wiki.git) for all the details
 
 ## Author
 
