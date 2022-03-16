@@ -4,7 +4,7 @@ A Pokémon team management written in Go
 
 ## Endpoints
 
-See [the public Endpoint website](https://endpointsportal.serdok-pokemon-go.cloud.goog/) to visualize all deployed endpoints
+See [the public Endpoint website](https://app.swaggerhub.com/apis/estiam-go/pokemon-go_by_serdok/1.0.0) to visualize all deployed endpoints
 
 ## Public use
 
